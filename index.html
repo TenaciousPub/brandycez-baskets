@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+<!-- SEO Meta Tags -->
+<title>Brandycez' Baskets — Custom Curated Gift Baskets</title>
+<meta name="description" content="Every basket is a one-of-a-kind experience — handpicked, beautifully styled, and personally crafted by Brandyce." />
+<meta name="keywords" content="custom gift baskets" />
+<meta property="og:title" content="Brandycez' Baskets — Custom Curated Gift Baskets" />
+<meta property="og:description" content="Every basket is a one-of-a-kind experience — handpicked, beautifully styled, and personally crafted by Brandyce." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Brandycez' Baskets — Custom Curated Gift Baskets" />
+<meta name="twitter:description" content="Every basket is a one-of-a-kind experience — handpicked, beautifully styled, and personally crafted by Brandyce." />
+<!-- End SEO Meta Tags -->
+
+<script data-field-replace>
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var fields={};
+  var paramMap={
+    'first_name':'firstName','last_name':'lastName','full_name':'fullName',
+    'email':'email','phone':'phone','company':'company',
+    'city':'city','state':'state','country':'country'
+  };
+  var skipTags={'SCRIPT':1,'STYLE':1,'NOSCRIPT':1,'TEXTAREA':1,'CODE':1,'PRE':1};
+  var hasUrlFields=false;
+  for(var p in paramMap){
+    var v=params.get(p);
+    if(v){fields[paramMap[p]]=v;hasUrlFields=true;}
+  }
+  var contactId=params.get('contact_id');
+  function esc(s){
+    if(!s)return s;
+    var d=document.createElement('div');
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
+  }
+  function doReplace(data){
+    var r={};
+    r['{{full_name}}']=esc(((data.firstName||'')+' '+(data.lastName||'')).trim()||((data.fullName||data.name)||''));
+    r['{{first_name}}']=esc(data.firstName||(data.name?data.name.split(' ')[0]:'')||'');
+    r['{{last_name}}']=esc(data.lastName||(data.name&&data.name.indexOf(' ')>-1?data.name.substring(data.name.indexOf(' ')+1):'')||'');
+    r['{{email}}']=esc(data.email||'');
+    r['{{phone}}']=esc(data.phone||'');
+    r['{{company}}']=esc(data.company||'');
+    r['{{city}}']=esc(data.city||'');
+    r['{{state}}']=esc(data.state||'');
+    r['{{country}}']=esc(data.country||'');
+    r['{{date}}']=new Date().toLocaleDateString();
+    r['{{time}}']=new Date().toLocaleTimeString();
+    r['{{location}}']=[data.city,data.state,data.country].filter(Boolean).join(', ');
+    r['{{tracking_id}}']=esc(data.trackingId||'');
+    r['{{lastClickedProduct}}']=esc(data.lastClickedProduct||'');
+    r['{{lastProductClickDate}}']=esc(data.lastProductClickDate||'');
+    r['{{lastClickedProductPrice}}']=esc(data.lastClickedProductPrice||'');
+    r['{{lastClickedProductURL}}']=esc(data.lastClickedProductURL||'');
+    r['{{productsClickedCount}}']=esc(data.productsClickedCount||'0');
+    r['{{ip_address}}']=esc(data.ipAddress||'');
+    r['{{ip}}']=esc(data.ipAddress||'');
+    if(data.customFields){
+      for(var k in data.customFields){
+        r['{{'+k+'}}']=esc(String(data.customFields[k]||''));
+      }
+    }
+    params.forEach(function(v,k){
+      if(!paramMap[k]&&k!=='contact_id'&&k!=='page_id'&&k.indexOf('utm_')!==0){
+        r['{{'+k+'}}']=esc(v);
+      }
+    });
+    var hasValues=false;
+    for(var key in r){if(r[key]){hasValues=true;break;}}
+    if(!hasValues)return;
+    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
+      acceptNode:function(n){
+        var p=n.parentNode;
+        if(p&&skipTags[p.nodeName])return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var node;
+    while(node=walker.nextNode()){
+      var txt=node.nodeValue;
+      if(txt&&txt.indexOf('{{')>-1){
+        var changed=txt;
+        for(var ph in r){
+          if(r[ph]&&changed.indexOf(ph)>-1){
+            changed=changed.split(ph).join(r[ph]);
+          }
+        }
+        if(changed!==txt)node.nodeValue=changed;
+      }
+    }
+    var attrs=['value','placeholder','content','alt','title'];
+    attrs.forEach(function(attr){
+      var els=document.querySelectorAll('['+attr+'*="{{"]');
+      for(var i=0;i<els.length;i++){
+        var tag=els[i].tagName;
+        if(skipTags[tag])continue;
+        var val=els[i].getAttribute(attr);
+        if(val){
+          var nv=val;
+          for(var ph in r){
+            if(r[ph]&&nv.indexOf(ph)>-1){
+              nv=nv.split(ph).join(r[ph]);
+            }
+          }
+          if(nv!==val)els[i].setAttribute(attr,nv);
+        }
+      }
+    });
+  }
+  function run(){
+    if(contactId){
+      var xhr=new XMLHttpRequest();
+      xhr.open('GET','https://paymegpt.com/api/landing/context/'+encodeURIComponent(contactId)+'?page_id=50');
+      xhr.onload=function(){
+        if(xhr.status===200){
+          try{
+            var resp=JSON.parse(xhr.responseText);
+            if(resp.success&&resp.contact){
+              var merged=resp.contact;
+              for(var k in fields){merged[k]=fields[k];}
+              doReplace(merged);
+              return;
+            }
+          }catch(e){}
+        }
+        if(hasUrlFields)doReplace(fields);
+      };
+      xhr.onerror=function(){if(hasUrlFields)doReplace(fields);};
+      xhr.send();
+    }else if(hasUrlFields){
+      doReplace(fields);
+    }
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}
+  else{run();}
+})();
+</script>
+<script data-payment>
+(function(){
+  var slug='UXEHi9jq';
+  var apiBase='https://paymegpt.com';
+  function findEmail(){
+    var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}
+    var inputs=document.querySelectorAll('input[type="email"],input[name*="email"],input[placeholder*="email"],input[placeholder*="Email"]');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value&&inputs[j].value.includes('@'))return inputs[j].value.trim();}
+    return '';
+  }
+  function findName(){
+    var ids=['name','fullName','full-name','buyer-name','buyerName','customer-name','userName','user-name'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value)return el.value.trim();}
+    var inputs=document.querySelectorAll('input[name*="name"]:not([name*="email"]):not([type="email"]),input[placeholder*="name"]:not([placeholder*="email"]):not([type="email"]),input[placeholder*="Name"]:not([type="email"])');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value)return inputs[j].value.trim();}
+    return '';
+  }
+  var __realProcessPayment=function(a,b,c,d,e){
+    var amountCents,email,productName,productDescription,customerName,quantity;
+    if(a&&typeof a==='object'){
+      amountCents=a.amountCents;email=a.email;productName=a.productName;
+      productDescription=a.productDescription||'';customerName=a.name||'';quantity=a.quantity||1;
+    }else{
+      amountCents=typeof a==='number'?a:0;productName=typeof b==='string'?b:'';
+      productDescription=typeof c==='string'?c:'';email='';customerName='';quantity=1;
+    }
+    if(!email)email=findEmail();
+    if(!customerName)customerName=findName();
+    if(!productName){alert('Product name is required.');return Promise.reject('no_product_name');}
+    if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}
+    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}
+    var successBase=window.location.href.split('?')[0];
+    return fetch(apiBase+'/api/landing-pages/public/'+slug+'/payment/checkout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}
+      else{alert(d.error||'Failed to process payment');throw new Error(d.error);}
+    });
+  };
+  Object.defineProperty(window,'__processPayment',{value:__realProcessPayment,writable:false,configurable:false});
+  document.addEventListener('DOMContentLoaded',function(){
+    var urlParams=new URLSearchParams(window.location.search);
+    if(urlParams.get('payment')==='success'){
+      var pName=urlParams.get('product')||'your item';
+      var overlay=document.createElement('div');overlay.id='payment-success-overlay';
+      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';
+      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';
+      document.body.appendChild(overlay);
+    }
+  });
+})();
+</script>  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav id="nav"><div class="container nav-inner">
+<div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--pink)">Brandycez' Baskets</div>
+<div class="nav-links" id="navLinks">
+<a href="#how">How It Works</a><a href="#collections">Collections</a><a href="#occasions">Occasions</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="#order" class="nav-cta">Order Now &#127873;</a>
+</div>
+<button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+</div></nav>
+
+<section class="hero" id="home"><div class="container hero-grid">
+<div class="hero-content">
+<h1>Custom Baskets <em>Curated with Love</em></h1>
+<p>Every basket is a one-of-a-kind experience &#8212; handpicked, beautifully styled, and personally crafted by Brandyce for birthdays, holidays, and every moment worth celebrating.</p>
+<div class="hero-buttons">
+<a href="#order" class="btn-p" onclick="openChat()">Start Your Order &#128149;</a>
+<a href="#collections" class="btn-s">View Collections</a>
+</div>
+<div class="trust-bar">
+<div class="trust-item"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg> 100+ Happy Customers</div>
+<div class="trust-item"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg> Handcrafted with Love</div>
+<div class="trust-item"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6z"/></svg> Same-Week Delivery</div>
+</div>
+</div>
+<div class="hero-visual">
+<div style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);border-radius:30px;padding:40px;display:flex;align-items:center;justify-content:center;min-height:400px;width:100%;max-width:480px">
+<div style="text-align:center">
+<div style="font-size:5rem;margin-bottom:16px">&#127873;&#127922;</div>
+<div style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--pink)">Bran&#127922;'z Baskets</div>
+<div style="font-size:1rem;color:var(--gray);margin-top:8px">Roll the dice on something amazing</div>
+</div>
+</div>
+</div>
+</div></section>
+
+<section class="how-it-works section-pad" id="how"><div class="container">
+<div class="section-header rv"><span class="tag">How It Works</span><h2>Four Simple Steps to the Perfect Gift</h2><p>No complicated forms &#8212; just chat with our AI concierge and we handle the rest</p></div>
+<div class="steps-grid">
+<div class="step-card rv rd1"><div class="step-icon">&#128172;</div><div class="step-num">1</div><h3>Chat With Us</h3><p>Tell our AI concierge about your recipient &#8212; their age, interests, favorite things, and the occasion.</p></div>
+<div class="step-card rv rd2"><div class="step-icon">&#127912;</div><div class="step-num">2</div><h3>Pick Your Vibe</h3><p>Choose your collection tier, colors, theme, and any personalization. We match every detail to your vision.</p></div>
+<div class="step-card rv rd3"><div class="step-icon">&#10024;</div><div class="step-num">3</div><h3>Brandyce Creates</h3><p>Brandyce personally handpicks and curates every item, arranging your basket into a stunning gift.</p></div>
+<div class="step-card rv rd4"><div class="step-icon">&#127881;</div><div class="step-num">4</div><h3>Deliver the Joy</h3><p>Choose pickup or delivery. Watch their face light up when they open something made just for them.</p></div>
+</div>
+</div></section>
+
+<section class="collections section-pad" id="collections"><div class="container">
+<div class="section-header rv"><span class="tag">Collections</span><h2>Find Your Perfect Tier</h2><p>From thoughtful small gifts to jaw-dropping luxury experiences</p></div>
+<div class="tier-grid">
+<div class="tier-card rv rd1"><div class="tier-emoji">&#127800;</div><div class="tier-name">Community</div><div class="tier-price">$25</div><ul class="tier-features"><li>Curated small basket</li><li>Themed items and treats</li><li>Gift-wrapped presentation</li><li>Perfect starter gift</li></ul><button class="tier-btn" onclick="openChat()">Choose This Tier</button></div>
+<div class="tier-card rv rd2"><div class="tier-emoji">&#127872;</div><div class="tier-name">Classic</div><div class="tier-price">$35</div><ul class="tier-features"><li>Larger curated basket</li><li>More variety and items</li><li>Themed styling</li><li>Great for any occasion</li></ul><button class="tier-btn" onclick="openChat()">Choose This Tier</button></div>
+<div class="tier-card feat rv rd3"><div class="tier-emoji">&#128142;</div><div class="tier-name">Enhanced</div><div class="tier-price">$60<span>+</span></div><ul class="tier-features"><li>Premium item selection</li><li>Personalization included</li><li>Custom name printing/vinyl</li><li>Elevated presentation</li></ul><button class="tier-btn" onclick="openChat()">Choose This Tier</button></div>
+<div class="tier-card rv rd4"><div class="tier-emoji">&#128081;</div><div class="tier-name">Premium</div><div class="tier-price">$100</div><ul class="tier-features"><li>Luxury curated items</li><li>Full personalization</li><li>Show-stopping presentation</li><li>The wow factor</li></ul><button class="tier-btn" onclick="openChat()">Choose This Tier</button></div>
+<div class="tier-card rv"><div class="tier-emoji">&#127942;</div><div class="tier-name">Signature Luxury</div><div class="tier-price">$150<span>+</span></div><ul class="tier-features"><li>The ultimate gift experience</li><li>Premium everything</li><li>Fully custom design</li><li>Unforgettable presentation</li></ul><button class="tier-btn" onclick="openChat()">Choose This Tier</button></div>
+</div>
+</div></section>
+
+<section class="occasions section-pad" id="occasions"><div class="container">
+<div class="section-header rv"><span class="tag">For Every Moment</span><h2>Baskets for Any Occasion</h2><p>No matter what you are celebrating, we have got you covered</p></div>
+<div class="occ-grid rv">
+<div class="occ-chip"><div class="oi">&#127874;</div><div class="ol">Birthdays</div></div>
+<div class="occ-chip"><div class="oi">&#127876;</div><div class="ol">Christmas</div></div>
+<div class="occ-chip"><div class="oi">&#128157;</div><div class="ol">Valentine's</div></div>
+<div class="occ-chip"><div class="oi">&#128035;</div><div class="ol">Easter</div></div>
+<div class="occ-chip"><div class="oi">&#128105;</div><div class="ol">Mother's Day</div></div>
+<div class="occ-chip"><div class="oi">&#128104;</div><div class="ol">Father's Day</div></div>
+<div class="occ-chip"><div class="oi">&#127891;</div><div class="ol">Graduation</div></div>
+<div class="occ-chip"><div class="oi">&#128118;</div><div class="ol">Baby Shower</div></div>
+<div class="occ-chip"><div class="oi">&#129298;</div><div class="ol">Get Well</div></div>
+<div class="occ-chip"><div class="oi">&#127969;</div><div class="ol">Housewarming</div></div>
+<div class="occ-chip"><div class="oi">&#128149;</div><div class="ol">Just Because</div></div>
+<div class="occ-chip"><div class="oi">&#127875;</div><div class="ol">Halloween</div></div>
+</div>
+</div></section>
+
+<section class="testimonials section-pad" id="reviews"><div class="container">
+<div class="section-header rv"><span class="tag">Love Notes</span><h2>What Our Customers Say</h2><p>Real reactions from real people who received a Brandycez Basket</p></div>
+<div class="tg">
+<div class="tc rv rd1"><div class="ts">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tt">My daughter was OBSESSED with her birthday basket! Every single item was perfect. The presentation was gorgeous too!</div><div class="ta"><div class="tav">TJ</div><div><div class="tn">Tamika J.</div><div class="to">Birthday Basket</div></div></div></div>
+<div class="tc rv rd2"><div class="ts">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tt">I ordered 5 baskets for my team at work and every one was personalized to each person. The attention to detail is unmatched!</div><div class="ta"><div class="tav">MR</div><div><div class="tn">Marcus R.</div><div class="to">Corporate Gifts</div></div></div></div>
+<div class="tc rv rd3"><div class="ts">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tt">The Christmas basket I got for my mom had her in tears! She said it was the most thoughtful gift she ever received.</div><div class="ta"><div class="tav">SB</div><div><div class="tn">Sheila B.</div><div class="to">Christmas Basket</div></div></div></div>
+</div>
+</div></section>
+
+<section class="faq section-pad" id="faq"><div class="container">
+<div class="section-header rv"><span class="tag">Questions?</span><h2>Frequently Asked Questions</h2></div>
+<div class="faq-list rv">
+<div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I place an order?</div><div class="faq-a">Just click Start Your Order and chat with our AI concierge! It walks you through everything &#8212; who the basket is for, their preferences, your budget, and delivery details. No forms to fill out.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How long does it take to receive my basket?</div><div class="faq-a">Standard orders typically take 3-7 business days. Rush orders (less than 72 hours) are available based on current volume.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I customize everything in the basket?</div><div class="faq-a">Your preferences guide the curation! Brandyce personally selects every item. Specific items may vary based on availability and seasonality.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do you handle food allergies?</div><div class="faq-a">Absolutely &#8212; we always ask about allergies and dietary restrictions. Items may be sourced from environments with common allergens. An allergen-free guarantee cannot be provided.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What payment methods do you accept?</div><div class="faq-a">We accept Zelle and PayPal (direct invoice). For orders $60 and above, a 50% non-refundable deposit is required before curation begins.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is personalization included in every tier?</div><div class="faq-a">Personalization is included in Enhanced ($60+), Premium ($100), and Signature Luxury ($150+) tiers. Community and Classic tiers do not include it unless you upgrade.</div></div>
+<div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do you offer delivery?</div><div class="faq-a">Yes! We offer both local pickup and delivery. Details are discussed when you place your order.</div></div>
+</div>
+</div></section>
+
+<section class="cta-section" id="order"><div class="container">
+<h2 class="rv">Ready to Create Something Special?</h2>
+<p class="rv">Chat with our AI concierge to design the perfect personalized gift basket. It takes just a few minutes!</p>
+<button class="btn-w rv" onclick="openChat()">Start Your Order Now &#127873;</button>
+</div></section>
+
+<footer><div class="container">
+<div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:20px">Brandycez' Baskets</div>
+<div class="fl"><a href="#how">How It Works</a><a href="#collections">Collections</a><a href="#occasions">Occasions</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a></div>
+<div class="fs"><a href="#">&#128248;</a><a href="#">&#128077;</a><a href="#">&#127925;</a></div>
+<div class="fc">&#169; 2026 Brandycez' Baskets. All rights reserved. Crafted with &#128149;</div>
+</div></footer>
+
+
+<script src="https://paymegpt.com/widget.js" data-widget="75659157" async></script>
+  <script src="script.js"></script>
+</body>
+</html>
