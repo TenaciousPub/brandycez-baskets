@@ -201,15 +201,15 @@
 </script>  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<nav id="nav"><div class="container nav-inner">
-<div style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--pink)">Brandycez' Baskets</div>
+<nav data-section="navbar" id="nav"><div class="container nav-inner">
+<div style="font-family:'Playfair Display',Georgia,serif;font-size:1.3rem;font-weight:700;color:#d946a8">Bran🎲'z Baskets</div>
 <div class="nav-links" id="navLinks">
 <a href="#how">How It Works</a><a href="#collections">Collections</a><a href="#occasions">Occasions</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="#order" class="nav-cta">Order Now &#127873;</a>
 </div>
 <button class="mobile-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
 </div></nav>
 
-<section class="hero" id="home"><div class="container hero-grid">
+<section data-section="hero" class="hero" id="home"><div class="container hero-grid">
 <div class="hero-content">
 <h1>Custom Baskets <em>Curated with Love</em></h1>
 <p>Every basket is a one-of-a-kind experience &#8212; handpicked, beautifully styled, and personally crafted by Brandyce for birthdays, holidays, and every moment worth celebrating.</p>
@@ -226,15 +226,15 @@
 <div class="hero-visual">
 <div style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);border-radius:30px;padding:40px;display:flex;align-items:center;justify-content:center;min-height:400px;width:100%;max-width:480px">
 <div style="text-align:center">
-<div style="font-size:5rem;margin-bottom:16px">&#127873;&#127922;</div>
-<div style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--pink)">Bran&#127922;'z Baskets</div>
-<div style="font-size:1rem;color:var(--gray);margin-top:8px">Roll the dice on something amazing</div>
+<div style="font-size:5rem;margin-bottom:16px">🎁🎲</div>
+<div style="font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:700;color:#d946a8">Bran🎲'z Baskets</div>
+<div style="font-size:1rem;color:#6b7280;margin-top:8px">Roll the dice on something amazing</div>
 </div>
 </div>
 </div>
 </div></section>
 
-<section class="how-it-works section-pad" id="how"><div class="container">
+<section data-section="how-it-works" class="how-it-works section-pad" id="how"><div class="container">
 <div class="section-header rv"><span class="tag">How It Works</span><h2>Four Simple Steps to the Perfect Gift</h2><p>No complicated forms &#8212; just chat with our AI concierge and we handle the rest</p></div>
 <div class="steps-grid">
 <div class="step-card rv rd1"><div class="step-icon">&#128172;</div><div class="step-num">1</div><h3>Chat With Us</h3><p>Tell our AI concierge about your recipient &#8212; their age, interests, favorite things, and the occasion.</p></div>
@@ -244,7 +244,7 @@
 </div>
 </div></section>
 
-<section class="collections section-pad" id="collections"><div class="container">
+<section data-section="collections" class="collections section-pad" id="collections"><div class="container">
 <div class="section-header rv"><span class="tag">Collections</span><h2>Find Your Perfect Tier</h2><p>From thoughtful small gifts to jaw-dropping luxury experiences</p></div>
 <div class="tier-grid">
 <div class="tier-card rv rd1"><div class="tier-emoji">&#127800;</div><div class="tier-name">Community</div><div class="tier-price">$25</div><ul class="tier-features"><li>Curated small basket</li><li>Themed items and treats</li><li>Gift-wrapped presentation</li><li>Perfect starter gift</li></ul><button class="tier-btn" onclick="openChat()">Choose This Tier</button></div>
@@ -255,7 +255,7 @@
 </div>
 </div></section>
 
-<section class="occasions section-pad" id="occasions"><div class="container">
+<section data-section="occasions" class="occasions section-pad" id="occasions"><div class="container">
 <div class="section-header rv"><span class="tag">For Every Moment</span><h2>Baskets for Any Occasion</h2><p>No matter what you are celebrating, we have got you covered</p></div>
 <div class="occ-grid rv">
 <div class="occ-chip"><div class="oi">&#127874;</div><div class="ol">Birthdays</div></div>
@@ -273,7 +273,7 @@
 </div>
 </div></section>
 
-<section class="testimonials section-pad" id="reviews"><div class="container">
+<section data-section="testimonials" class="testimonials section-pad" id="reviews"><div class="container">
 <div class="section-header rv"><span class="tag">Love Notes</span><h2>What Our Customers Say</h2><p>Real reactions from real people who received a Brandycez Basket</p></div>
 <div class="tg">
 <div class="tc rv rd1"><div class="ts">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="tt">My daughter was OBSESSED with her birthday basket! Every single item was perfect. The presentation was gorgeous too!</div><div class="ta"><div class="tav">TJ</div><div><div class="tn">Tamika J.</div><div class="to">Birthday Basket</div></div></div></div>
@@ -282,7 +282,7 @@
 </div>
 </div></section>
 
-<section class="faq section-pad" id="faq"><div class="container">
+<section data-section="faq" class="faq section-pad" id="faq"><div class="container">
 <div class="section-header rv"><span class="tag">Questions?</span><h2>Frequently Asked Questions</h2></div>
 <div class="faq-list rv">
 <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I place an order?</div><div class="faq-a">Just click Start Your Order and chat with our AI concierge! It walks you through everything &#8212; who the basket is for, their preferences, your budget, and delivery details. No forms to fill out.</div></div>
@@ -295,14 +295,14 @@
 </div>
 </div></section>
 
-<section class="cta-section" id="order"><div class="container">
+<section data-section="cta" class="cta-section" id="order"><div class="container">
 <h2 class="rv">Ready to Create Something Special?</h2>
 <p class="rv">Chat with our AI concierge to design the perfect personalized gift basket. It takes just a few minutes!</p>
 <button class="btn-w rv" onclick="openChat()">Start Your Order Now &#127873;</button>
 </div></section>
 
-<footer><div class="container">
-<div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:20px">Brandycez' Baskets</div>
+<footer data-section="footer"><div class="container">
+<div style="font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:20px">Bran🎲'z Baskets</div>
 <div class="fl"><a href="#how">How It Works</a><a href="#collections">Collections</a><a href="#occasions">Occasions</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a></div>
 <div class="fs"><a href="#">&#128248;</a><a href="#">&#128077;</a><a href="#">&#127925;</a></div>
 <div class="fc">&#169; 2026 Brandycez' Baskets. All rights reserved. Crafted with &#128149;</div>
